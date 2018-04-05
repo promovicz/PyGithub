@@ -67,6 +67,7 @@ import RateLimit
 import InstallationAuthorization
 import GithubException
 import Invitation
+import Meta
 
 atLeastPython3 = sys.hexversion >= 0x03000000
 
@@ -168,6 +169,17 @@ class Github(object):
         :type: list of string
         """
         return self.__requester.oauth_scopes
+
+    def get_meta(self):
+        """
+        :calls: `GET /meta <http://developer.github.com/v3/meta>`_
+        :rtype: :class:`github.Meta.Meta`
+        """
+        headers, attributes = self.__requester.requestJsonAndCheck(
+            'GET',
+            '/meta'
+        )
+        return Meta.Meta(self.__requester, headers, attributes, True)
 
     def get_user(self, login=github.GithubObject.NotSet):
         """
